@@ -4,6 +4,7 @@ import "./feed.styles.css";
 import { PostsContext } from "./home.page";
 
 const Feed = () => {
+  // Accessing context API
   const { userPosts, incReact } = useContext(PostsContext);
 
   // const [posts, setPosts] = useState([]);

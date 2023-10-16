@@ -4,17 +4,21 @@ import Footer from "./footer.component";
 import Navbar from "./navbar.component";
 import axios from "axios";
 
+// Creating context API
 export const PostsContext = createContext();
 
 const HomePage = () => {
   const [userPosts, setUserPosts] = useState([]);
 
+  // Use of useEffect hook
   useEffect(() => {
+    // Use of axios
     axios.get("https://dummyjson.com/posts").then((response) => {
       setUserPosts(response.data.posts);
     });
   }, []);
 
+  // A call-back function
   const incReact = (index) => {
     const updatedPosts = [...userPosts];
     updatedPosts[index].reactions = (updatedPosts[index].reactions || 0) + 1;
