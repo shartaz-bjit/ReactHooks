@@ -1,24 +1,24 @@
-import { createContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Feed from "./feed.component";
-import Footer from "./footer.component";
 import Navbar from "./navbar.component";
-import axios from "axios";
+import { useApi } from "./useApi";
 
-// Creating context API
-export const PostsContext = createContext();
+export const PostsContext = React.createContext();
 
 const HomePage = () => {
   const [userPosts, setUserPosts] = useState([]);
+  const { loading, data, error, fetchData } = useApi();
 
-  // Use of useEffect hook
   useEffect(() => {
-    // Use of axios
-    axios.get("https://dummyjson.com/posts").then((response) => {
-      setUserPosts(response.data.posts);
-    });
+    fetchData("get", "http://localhost:4400/posts");
   }, []);
 
-  // A call-back function
+  useEffect(() => {
+    if (data) {
+      setUserPosts(data);
+    }
+  }, [data]);
+
   const incReact = (index) => {
     const updatedPosts = [...userPosts];
     updatedPosts[index].reactions = (updatedPosts[index].reactions || 0) + 1;
@@ -29,9 +29,20 @@ const HomePage = () => {
     <>
       <Navbar />
       <PostsContext.Provider value={{ userPosts, incReact }}>
-        <Feed />
+        {loading && (
+          <div className="alert alert-info" role="alert">
+            Loading...
+          </div>
+        )}
+
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            Error: {error.message}
+          </div>
+        )}
+
+        {!loading && !error && <Feed />}
       </PostsContext.Provider>
-      <Footer />
     </>
   );
 };

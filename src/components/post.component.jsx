@@ -4,15 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import moment from "moment-timezone";
 
-// Props drilling
-const Post = ({ /*key,*/ index, post, addReact }) => {
+const Post = ({ index, post, addReact }) => {
   const [showFullText, setShowFullText] = useState(false);
   const formattedDate = moment(post.postTime).format("h:mm A, D MMMM YYYY");
 
   const toggleReadMore = (e) => {
     console.log("Toggled read more");
     setShowFullText(!showFullText);
-    // Stopping event propagation
     e.stopPropagation();
   };
 
@@ -46,7 +44,7 @@ const Post = ({ /*key,*/ index, post, addReact }) => {
             style={{ color: "red", cursor: "pointer" }}
             onClick={() => addReact(index)}
           />
-          {post.reactions === 0
+          {post.reactions === 0 || post.reactions == null
             ? " No reactions yet"
             : ` ${post.reactions} reactions`}
         </p>
